@@ -15,12 +15,13 @@ what governs decisions vs. what merely informs them.
 
 ---
 
-## The Six Files
+## The Seven Files
 
 | File | Role | Authority | Changes |
 |------|------|-----------|---------|
 | `CLAUDE.md` | Governance layer — architectural law | L1 within repository governance | Rarely |
 | `AGENTS.md` | Operational procedures — session workflow | L2 | Occasionally |
+| `DECISIONS.md` | Architectural decisions — permanent ADR record | L2 | On new decision |
 | `DYNAMIC.md` | Operational memory — current state | L5 | Every session |
 | `skills.md` | Domain knowledge — informs decisions | L4 | On update |
 | `LOG_ERRORS.md` | Prevention knowledge — distilled lessons | Prevention layer | As errors occur |
@@ -50,11 +51,12 @@ At startup, the agent automatically executes Step 0:
 
 ```
 ① Loads CLAUDE.md — reads your architectural principles, constraints, coding standards
-② Scans LOG_ERRORS.md PREVENTION ACTIVE — silently applies past error patterns
-③ Loads DYNAMIC.md Hot Zone — resumes exactly where you left off
+② Loads DECISIONS.md — applies permanent architectural decisions alongside CLAUDE.md
+③ Scans LOG_ERRORS.md PREVENTION ACTIVE — silently applies past error patterns
+④ Loads DYNAMIC.md Hot Zone — resumes exactly where you left off
    (current task · blockers · active decisions)
-④ Reports:
-   ✅ Boot complete — [PROJECT] · 3 prevention patterns · Hot Zone: 2 active items
+⑤ Reports:
+   ✅ Boot complete — [PROJECT] · 3 prevention patterns · 5 architectural decisions · Hot Zone: 2 active items
 ```
 
 During work, if you propose something that violates a CLAUDE.md principle, the agent signals:
@@ -89,7 +91,7 @@ The agent reloads the updated files — it knows exactly where you are, which er
 ---
 
 **In short:**
-`BOOT.md` = guided setup · `CLAUDE.md` = permanent law · `DYNAMIC.md` = memory between sessions · `LOG_ERRORS.md` = recurring error prevention · Git = persistence.
+`BOOT.md` = guided setup · `CLAUDE.md` = permanent law · `DECISIONS.md` = architectural ADRs · `DYNAMIC.md` = memory between sessions · `LOG_ERRORS.md` = recurring error prevention · Git = persistence.
 
 ---
 
@@ -273,10 +275,10 @@ Add a `SOP-[NAME]` section for any recurring workflow.
 
 ## Compatibility
 
-Tested conceptually with: Claude · GPT-4 · Gemini.
+Tested with: Claude Code · GPT-4o · Gemini 2.0.
 Any agent capable of following structured multi-step instructions can run FIL.
 Behavior may vary between models — test your `AGENTS.md` session lifecycle
-on your primary model before relying on it.
+on your primary model before relying on it in production.
 
 ---
 
@@ -319,6 +321,7 @@ on your primary model before relying on it.
 BOOT.md         ← start here · interview wizard · generates all files
 CLAUDE.md       ← governance law · fill manually or via BOOT.md
 AGENTS.md       ← session workflow · do not modify often
+DECISIONS.md    ← architectural decisions · ADR · permanent · never archived
 DYNAMIC.md      ← update every session · committed after operator review
 skills.md       ← domain knowledge · grows with project
 LOG_ERRORS.md   ← prevention memory · auto-filled by agent
