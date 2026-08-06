@@ -1,4 +1,4 @@
-# FIL Coding Agent Edition · V1.0.0-beta
+# FIL Coding Agent Edition · V1.3.0-beta
 > "Governance over context."
 > Adapted from FIL Framework V3.4.2 for long-running coding agent workflows.
 
