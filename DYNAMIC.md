@@ -6,11 +6,34 @@
 ---
 
 ## NCGL ACTIVE BLOCKS 🔷
+> NCGL = Natural Constrained Governance Language
 > Structured governance blocks for critical multi-session items.
-> Use only for: PRIORITY high/critical · complex expected behavior · multi-session governance.
-> Leave empty if no active blocks. Do not use for Warm or Cold Zone items.
+> Scanned at every boot (Step 0B). Validated by the probabilistic interpreter.
+>
+> USE when 2+ of these conditions are true:
+>   ✓ PRIORITY high or critical
+>   ✓ EXPECTED_BEHAVIOR non-trivial (multi-condition or multi-session)
+>   ✓ VALIDITY = specific date or structured frequency
+>   ✓ Multi-session governance required
+>
+> NEVER use in Warm Zone or Cold Zone.
+> Full syntax reference: CLAUDE.md → NCGL section · AGENTS.md → NCGL INTERPRETER
 
 *(empty — add NCGL blocks here when needed)*
+
+```
+Quick reference — most common blocks:
+
+TASK block:           ALERT block:          DECISION block:
+  TASK: [title]         ALERT: [title]        DECISION: [title]
+  STATUS: active        SEVERITY: high        TRUTH: user-confirmed
+  TRUTH: verified       STATUS: active        VALIDITY: permanent
+  VALIDITY: date·X      TRUTH: verified       REVERSIBLE: yes|no
+  PRIORITY: high        VALIDITY: date·X      RATIONALE: ...
+  SCOPE: hot            CAUSE: ...            IMPACT: ...
+  CONTEXT: ...          ACTION: ...
+                        FALLBACK: ...
+```
 
 ---
 
@@ -124,13 +147,16 @@ Format:
 ```
 Every session:
 ① CLAUDE.md — always first (governance · L1)
-② LOG_ERRORS.md — PREVENTION ACTIVE section (prevention layer)
-③ This file — Hot Zone fully · Warm Zone on demand (operational · L5)
-④ skills.md — only if current task requires it (domain knowledge · L4)
+② DECISIONS.md — architectural decisions (L2)
+③ LOG_ERRORS.md — PREVENTION ACTIVE section (prevention layer)
+④ This file — Hot Zone fully · Warm Zone on demand (operational · L5)
+   → Step 0B: scan NCGL ACTIVE BLOCKS · run probabilistic interpreter
+⑤ skills.md — only if current task requires it (domain knowledge · L4)
 
 Hot Zone → Warm Zone: completed tasks · expired data (at Step 7)
 Warm Zone → Cold Zone: items older than 30 days (at Step 7)
 Nothing is ever deleted — only moved down.
+NCGL blocks: expired → inline summary in Warm Zone · deprecated → Cold Zone
 ```
 
 ---
