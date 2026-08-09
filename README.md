@@ -39,7 +39,7 @@ Copy `BOOT.md` to your repo root, then tell your agent:
 Load BOOT.md and follow the FIL Boot sequence.
 ```
 
-The agent interviews you one question at a time — about 15 questions — and generates all 6 project files fully populated, including the security-by-design baseline. No `[placeholder]` to fill manually. It then proposes a first commit: `chore: initialize FIL Coding Agent V1.0.0-beta`. You review and confirm.
+The agent interviews you one question at a time — about 18 questions — and generates all 6 project files fully populated, including the security-by-design baseline. No `[placeholder]` to fill manually. It then proposes a first commit: `chore: initialize FIL Coding Agent V1.4.0-beta`. You review and confirm.
 
 → See [**Setup**](#setup) below for full details (Option A guided · Option B manual).
 
