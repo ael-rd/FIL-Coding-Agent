@@ -1,4 +1,4 @@
-# FIL Coding Agent Edition · V1.3.0-beta
+# FIL Coding Agent Edition · V1.4.0-beta
 > "Governance over context."
 > Adapted from FIL Framework V3.4.2 for long-running coding agent workflows.
 
@@ -33,13 +33,13 @@ what governs decisions vs. what merely informs them.
 
 ### 1. Setup (once)
 
-Copy the 6 files to your repo root, then tell your agent:
+Copy `BOOT.md` to your repo root, then tell your agent:
 
 ```
 Load BOOT.md and follow the FIL Boot sequence.
 ```
 
-The agent interviews you one question at a time — about 15 questions — and generates all 5 project files fully populated. No `[placeholder]` to fill manually. It then proposes a first commit: `chore: initialize FIL Coding Agent V1.0.0-beta`. You review and confirm.
+The agent interviews you one question at a time — about 18 questions — and generates all 6 project files fully populated, including the security-by-design baseline. No `[placeholder]` to fill manually. It then proposes a first commit: `chore: initialize FIL Coding Agent V1.4.0-beta`. You review and confirm.
 
 → See [**Setup**](#setup) below for full details (Option A guided · Option B manual).
 
@@ -118,6 +118,12 @@ trufflehog git file://. --since-commit HEAD
 
 If you accidentally commit a secret: rotate it immediately. Git history is permanent.
 
+FIL V1.4 also generates a mandatory, proportional Security Baseline in `CLAUDE.md`
+and a `SOP-SECURITY` workflow in `AGENTS.md`. The baseline covers trust boundaries,
+server-side authorization, write-method protection, validation, uploads, network exposure,
+least privilege, CI/CD trust, backups, rollback, and evidence-based verification.
+Projects may mark a category `[N/A — category — reason]`; they may not silently ignore it.
+
 ---
 
 ## Setup
@@ -129,8 +135,8 @@ Load `BOOT.md` into your coding agent and say:
 Load BOOT.md and follow the FIL Boot sequence.
 ```
 
-The agent interviews you and generates all 5 files fully populated — no placeholders to fill manually.
-BOOT.md handles: project identity · architectural principles · coding standards · domain knowledge · error categories · first Git checkpoint.
+The agent interviews you and generates all 6 project files fully populated — no placeholders to fill manually.
+BOOT.md handles: project identity · architectural principles · security profile · coding standards · domain knowledge · architectural decisions · error categories · first Git checkpoint.
 
 ### Option B — Manual setup (~15 minutes)
 
@@ -139,6 +145,7 @@ BOOT.md handles: project identity · architectural principles · coding standard
 ```bash
 cp CLAUDE.md your-project/CLAUDE.md
 cp AGENTS.md your-project/AGENTS.md
+cp DECISIONS.md your-project/DECISIONS.md
 cp DYNAMIC.md your-project/DYNAMIC.md
 cp skills.md your-project/skills.md
 cp LOG_ERRORS.md your-project/LOG_ERRORS.md
@@ -172,7 +179,7 @@ Open `DYNAMIC.md` and fill in:
 
 Tell your agent:
 ```
-Load CLAUDE.md, AGENTS.md, DYNAMIC.md, and LOG_ERRORS.md.
+Load CLAUDE.md, AGENTS.md, DECISIONS.md, DYNAMIC.md, and LOG_ERRORS.md.
 Follow the session lifecycle defined in AGENTS.md.
 ```
 
@@ -286,7 +293,7 @@ on your primary model before relying on it in production.
 
 ```
 # First boot
-"Load CLAUDE.md, AGENTS.md, DYNAMIC.md, and LOG_ERRORS.md.
+"Load CLAUDE.md, AGENTS.md, DECISIONS.md, DYNAMIC.md, and LOG_ERRORS.md.
  Follow the session lifecycle defined in AGENTS.md."
 
 → Agent reports: "✅ Boot complete — [PROJECT] · 0 prevention patterns · Hot Zone: empty"
@@ -337,6 +344,6 @@ BSD 3-Clause. See LICENSE file.
 
 ---
 
-*FIL Coding Agent Edition V1.0.0-beta*
+*FIL Coding Agent Edition V1.4.0-beta*
 *Adapted from FIL Framework V3.4.2*
 *"Governance over context."*

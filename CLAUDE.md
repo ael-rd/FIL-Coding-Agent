@@ -1,5 +1,5 @@
 # [PROJECT_NAME] — Governance Layer (CLAUDE.md)
-> FIL Coding Agent Edition · V1.0.0-beta
+> FIL Coding Agent Edition · V1.4.0-beta
 > Authority: L1 within repository governance only.
 > Never overrides platform/system instructions, security policies, or operator decisions.
 > Analogous to: architectural decision records + permanent constraints.
@@ -114,26 +114,60 @@ N/A DECLARATIONS (inapplicable default categories):
 → [N/A — category name — reason] e.g. "[N/A — API & Interfaces — internal lib only]"
 ```
 
-### Security — Non-negotiable · Never bypass silently
+### Security Baseline — Non-negotiable · Proportional by design
 ```
-SECRETS & CREDENTIALS
-→ No passwords, API keys, tokens, or secrets in source code — ever
-→ No secrets in .env files committed to Git
-→ No hardcoded IPs, hostnames, or connection strings in source code
-→ All secrets go in a secrets manager (Vault · AWS SSM · Doppler · 1Password)
-→ .env files are always in .gitignore — no exceptions
-→ If a secret is accidentally committed: rotate immediately · Git history is permanent
+SCOPE & RISK
+→ Classify the project before choosing controls: local · personal-public · internal · sensitive
+→ Identify assets, write operations, trust boundaries, privileged identities, and recovery needs
+→ Apply controls proportionally — do not add public services or operational complexity without a concrete threat
+→ A category may be marked [N/A — category — reason], but never silently ignored
 
-ENVIRONMENT FILES
-→ .env.example is the only committed env file
-→ .env.example contains placeholder values only — never real values
-→ Never copy a real .env to share with a teammate — use the secrets manager
+SECRETS & CLIENT CODE
+→ No passwords, API keys, private tokens, credentials, or real .env values in source or Git
+→ Treat every frontend bundle, mobile binary, generated artifact, prompt, log, and CI output as readable by an attacker
+→ Public identifiers and URLs are not secrets; privileged share links and write-capable tokens are secrets
+→ Inject secrets at runtime from the platform secret store; never bake them into images or client bundles
+→ If a secret is exposed: stop, revoke or rotate it, remove it, scan history, then document the prevention
 
-DETECTION
-→ Run secret scan before every commit:
-   git secrets --scan
-   trufflehog git file://. --since-commit HEAD
-→ If a scan fails: block the commit · rotate the secret · do not force push
+AUTHENTICATION & AUTHORIZATION
+→ Enforce authentication and authorization on the server at every privileged boundary
+→ Never rely on a hidden route, client-side guard, UI state, CORS, or an IP restriction alone when the risk requires identity
+→ Protect write methods as well as paths; verify POST, PUT, PATCH, and DELETE from an unauthorized network
+→ Apply least privilege to users, service accounts, deploy keys, database roles, and filesystem permissions
+→ Separate human administration credentials from CI/CD credentials
+
+INPUTS, OUTPUTS & FILES
+→ Validate all external input at the boundary with an explicit schema, size limit, and allowed values
+→ Parameterize database queries; encode or sanitize untrusted rendered content
+→ Prevent path traversal by resolving paths inside an approved root
+→ File uploads: allowlisted formats, generated filenames, content-signature verification, size limits, non-executable storage
+→ Return minimal errors externally; keep sensitive diagnostic context in protected logs
+
+NETWORK & DATA
+→ Bind internal services to localhost or a private network unless public exposure is explicitly required
+→ Databases, admin panels, metrics, and control APIs are private by default
+→ Expose only required ports; require TLS for public traffic; define suitable security headers for web applications
+→ Do not log secrets, credentials, session tokens, full sensitive payloads, or unnecessary personal data
+→ Define retention and deletion for operational and personal data
+
+DEPENDENCIES & SUPPLY CHAIN
+→ Prefer standard library or existing dependencies before adding a package
+→ Pin reproducible versions and lockfiles; verify source, maintenance, license, and known vulnerabilities
+→ Run dependency and secret scans in CI; never blindly execute remote install scripts
+→ Pin or verify CI actions and SSH host identities; do not replace host verification with automatic trust
+
+DEPLOYMENT & RECOVERY
+→ Production changes require tested build output, explicit scope, health verification, and a rollback path
+→ Keep development, deployment, and runtime privileges separated
+→ Back up irreplaceable data outside the application host; encrypt sensitive backups
+→ A backup is not accepted until restoration has been tested
+→ Monitor only actionable signals: availability, failed authentication, storage, certificate expiry, and recovery state
+
+VERIFICATION
+→ Security claims require evidence: configuration, test, scanner output, or authoritative documentation
+→ Test the unauthorized case, not only the successful case
+→ Before delivery, state residual risks and why they are acceptable for the project's risk profile
+→ Never claim “secure” solely because a framework, firewall, WAF, cloud provider, or scanner is present
 ```
 
 ### Code Quality
@@ -483,6 +517,11 @@ LOG_ERRORS_FILE         : LOG_ERRORS.md
 ## CHANGELOG
 
 ```
+V1.4.0-beta ([DATE])
+→ SECURITY BASELINE expanded: proportional risk classification · trust boundaries ·
+  server-side authorization · write-method protection · client-secret prohibition ·
+  upload/network/supply-chain safety · recovery · evidence and residual risks
+
 V1.3.0-beta ([DATE])
 → AUTHORITY HIERARCHY: L2 conflict resolution rule added
 → PERMANENT CONSTRAINTS: N/A mechanism added for inapplicable categories
