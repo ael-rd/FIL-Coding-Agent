@@ -180,7 +180,7 @@ RULE:
 ```
 Question:
 
-12. "Beyond the standard FIL error categories (ARCH_VIOLATION, TEST_SKIP,
+15. "Beyond the standard FIL error categories (ARCH_VIOLATION, TEST_SKIP,
      LINT_BYPASS, SECRET_LEAK), are there domain-specific error types
      you want to track?
      Examples for a payments project: DOUBLE_CHARGE · WEBHOOK_IGNORED
@@ -194,14 +194,14 @@ Question:
 ```
 Questions:
 
-13. "What is the current state of the project?
+16. "What is the current state of the project?
      (e.g. greenfield · MVP in progress · v2 refactor · legacy cleanup)"
     → Note: PROJECT_PHASE
 
-14. "What are the top 3 tasks you need to tackle right now?"
+17. "What are the top 3 tasks you need to tackle right now?"
     → Note: INITIAL_TODOS[]
 
-15. "Any active blockers or known issues?"
+18. "Any active blockers or known issues?"
     → Note: INITIAL_BLOCKERS[]
 ```
 
