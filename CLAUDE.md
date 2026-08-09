@@ -1,5 +1,5 @@
 # [PROJECT_NAME] — Governance Layer (CLAUDE.md)
-> FIL Coding Agent Edition · V1.0.0-beta
+> FIL Coding Agent Edition · V1.4.0-beta
 > Authority: L1 within repository governance only.
 > Never overrides platform/system instructions, security policies, or operator decisions.
 > Analogous to: architectural decision records + permanent constraints.
@@ -517,6 +517,11 @@ LOG_ERRORS_FILE         : LOG_ERRORS.md
 ## CHANGELOG
 
 ```
+V1.4.0-beta ([DATE])
+→ SECURITY BASELINE expanded: proportional risk classification · trust boundaries ·
+  server-side authorization · write-method protection · client-secret prohibition ·
+  upload/network/supply-chain safety · recovery · evidence and residual risks
+
 V1.3.0-beta ([DATE])
 → AUTHORITY HIERARCHY: L2 conflict resolution rule added
 → PERMANENT CONSTRAINTS: N/A mechanism added for inapplicable categories
