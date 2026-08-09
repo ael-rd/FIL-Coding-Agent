@@ -306,40 +306,83 @@ TRIGGER: Step 0 surfaces an ADR with REVIEW_DATE reached
    Confirm: "✅ ADR-[NNN] review complete — STATUS: [RENEWED|SUPERSEDED|DEPRECATED|DEFERRED]"
 ```
 
-### SOP-SECURITY · Pre-commit Security Scan
+### SOP-SECURITY · Security-by-Design Review
 
 ```
-TRIGGER: before every `commit` or `save commit` command
-         | "security scan" | "run scan"
+TRIGGER:
+→ Any new or changed public endpoint, authentication, authorization, file upload,
+  database access, secret, dependency, CI/CD workflow, infrastructure, deployment,
+  logging, monitoring, backup, or external integration
+→ Before every `commit` or `save commit`
+→ "security review" · "security scan" · "threat check"
 
-MANDATORY — never skip · even on hotfix commits.
+PHASE A — CLASSIFY
+① State the project risk profile:
+   local | personal-public | internal | sensitive
+② Identify what changed:
+   → Assets or data affected
+   → New or changed write operations
+   → Trust boundaries crossed
+   → Privileged identities or credentials involved
+   → New network exposure or dependency
+③ Mark irrelevant categories explicitly:
+   [N/A — CATEGORY — concrete reason]
+   Never silently skip a category.
 
-① Run secret scan:
+PHASE B — DESIGN REVIEW
+④ Apply CLAUDE.md Security Baseline to the changed scope:
+   → Server-side authentication and authorization
+   → Write-method protection (POST · PUT · PATCH · DELETE)
+   → Input schema · size limits · output encoding
+   → Filesystem/path and upload safety
+   → Secret placement and least privilege
+   → Network binding and exposed ports
+   → Dependency and supply-chain trust
+   → Logging minimization · retention
+   → Backup, restoration, rollback, and health verification
+⑤ Prefer the smallest control that addresses the concrete threat.
+   Do not introduce a public service, account, port, or dependency without justification.
+⑥ For security-sensitive architecture, present trade-offs and wait for operator approval.
+
+PHASE C — ADVERSARIAL VERIFICATION
+⑦ Test both success and failure paths:
+   → Authorized request succeeds
+   → Unauthorized network/user/request is rejected
+   → Invalid, oversized, traversal, and malformed inputs fail safely where relevant
+   → Internal services are unreachable from public interfaces
+⑧ Verify claims using configuration, tests, scanner output, or authoritative documentation.
+   Never infer enforcement from comments, UI behavior, or package presence alone.
+
+PHASE D — PRE-COMMIT SCANS
+⑨ Run the available secret scanner:
    git secrets --scan
    OR: trufflehog git file://. --since-commit HEAD --only-verified
+⑩ Run the ecosystem dependency audit and relevant static checks.
+⑪ Review the staged diff for:
+   → Secrets and private URLs
+   → New permissions or network exposure
+   → CI workflow and infrastructure changes
+   → Debug logging and sensitive payloads
+   → Generated/client artifacts containing privileged values
 
-② Evaluate results:
-   CLEAN → proceed to commit
-   FINDINGS → STOP immediately:
-     → Do NOT commit
-     → Report: "⚠️ SECURITY SCAN FAILED — [finding summary]"
-     → Identify the file and line
-     → Ask operator: "Rotate the secret now? (yes/no)"
-     → On yes: operator rotates · remove from code · re-scan · commit clean
-     → On no: block commit · log in LOG_ERRORS.md as SECRET_LEAK [critical]
+RESULT:
+CLEAN
+→ Report checks run, evidence, N/A categories, and residual risks.
+→ Proceed only if tests/lint status is known.
 
-③ If scan tool is not installed:
-   → Signal: "⚠️ Secret scan tool not available — install before committing"
-   → Provide install command based on STACK (npm / pip / brew)
-   → Do NOT skip scan — block commit until tool is available
+FINDINGS
+→ STOP before commit or deployment.
+→ Report severity · evidence · affected boundary · smallest safe remediation.
+→ Secret exposed: revoke/rotate first, remove second, scan history third.
+→ Log systematic failures in LOG_ERRORS.md.
 
-④ Log scan result in DYNAMIC.md Hot Zone if findings detected:
-   Format: ⚠️ SECRET_SCAN_FAIL · [DATE] · [file] · [resolved: yes|pending]
+TOOL UNAVAILABLE
+→ Do not claim the check passed.
+→ Use a safe available fallback or report the verification gap.
+→ Block only when the missing evidence is material to the project's risk profile.
 
-SCAN FREQUENCY:
-→ Every commit (mandatory)
-→ Every new dependency added (SOP-DEPENDENCY step ⑥)
-→ Every session start if LAST_COMMIT is unknown
+MANDATORY DELIVERY NOTE:
+"Security review: [checks] · N/A: [categories] · Residual risk: [accepted risks]"
 ```
 
 ### SOP-RECOVERY · Post-Recovery Reconciliation
