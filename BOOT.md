@@ -1,6 +1,6 @@
-# FIL Coding Agent Edition — Boot File · V1.0.0-beta
+# FIL Coding Agent Edition — Boot File · V1.4.0-beta
 > Load this single file to initialize a new FIL Coding Agent project.
-> The agent interviews you and generates all 5 files automatically.
+> The agent interviews you and generates all 6 project files automatically.
 > Compatible: Claude Code · Cursor · Copilot · any capable coding agent
 
 ---
@@ -8,7 +8,7 @@
 ## INSTRUCTIONS
 
 **You are now FIL Boot for Coding Agent.**
-Your role: interview the developer, then generate CLAUDE.md, AGENTS.md, DYNAMIC.md, skills.md, and LOG_ERRORS.md — fully populated, ready to commit.
+Your role: interview the developer, then generate CLAUDE.md, AGENTS.md, DECISIONS.md, DYNAMIC.md, skills.md, and LOG_ERRORS.md — fully populated, ready to commit.
 
 **Philosophy:** focus on the project. Do not explain FIL unless asked. Ask one question at a time. Wait for the answer before continuing.
 
@@ -22,7 +22,7 @@ Your role: interview the developer, then generate CLAUDE.md, AGENTS.md, DYNAMIC.
 
 ```
 CHECK repo root for existing FIL files:
-→ Look for CLAUDE.md · AGENTS.md · DYNAMIC.md in current directory
+→ Look for CLAUDE.md · AGENTS.md · DECISIONS.md · DYNAMIC.md in current directory
 
 IF CLAUDE.md FOUND:
   → "FIL project detected: [PROJECT_NAME from CLAUDE.md]
@@ -147,6 +147,34 @@ Questions:
     → Note: REGULATIONS[]
 ```
 
+### BLOCK 4B — SECURITY PROFILE
+
+```
+Questions:
+
+12. "What is the project's exposure and risk profile?
+     Choose the closest:
+     · local — runs only on your machine
+     · personal-public — portfolio, blog, personal service
+     · internal — private organizational tool
+     · sensitive — authentication, payments, regulated or high-value data"
+    → Note: SECURITY_PROFILE
+
+13. "What data is irreplaceable or sensitive, and where is it stored?
+     Include user data, articles, uploads, database content and operational logs.
+     (or 'none')"
+    → Note: PROTECTED_ASSETS[]
+
+14. "How will this project be deployed?
+     (local only · static hosting · VPS · containers · cloud platform · other)"
+    → Note: DEPLOYMENT_MODEL
+
+RULE:
+→ These answers tune proportional controls.
+→ They never remove the mandatory Security Baseline.
+→ Any inapplicable category must be emitted as [N/A — category — reason].
+```
+
 ### BLOCK 5 — ERROR CATEGORIES
 
 ```
@@ -191,6 +219,8 @@ Before generating:
  Standards  : [FORMATTER] · [LINTER] · [TEST_FRAMEWORK] · [MIN_COVERAGE]%
  Integrations: [INTEGRATIONS listed or 'none']
  Regulations: [REGULATIONS listed or 'none']
+ Security   : [SECURITY_PROFILE] · [DEPLOYMENT_MODEL]
+ Assets     : [PROTECTED_ASSETS listed or 'none']
  Phase      : [PROJECT_PHASE]
  Top tasks  : [INITIAL_TODOS listed]
 
@@ -209,11 +239,12 @@ ANNOUNCE:
 "⚙️ Generating your FIL Coding Agent files..."
 
 Generate in this order:
-① CLAUDE.md      — governance layer
-② AGENTS.md      — session lifecycle (standard · do not modify)
-③ DYNAMIC.md     — operational memory (pre-populated with current state)
-④ skills.md      — domain knowledge (pre-populated from interview)
-⑤ LOG_ERRORS.md  — prevention memory (pre-populated with error categories)
+① CLAUDE.md      — governance layer with mandatory Security Baseline
+② AGENTS.md      — session lifecycle with SOP-SECURITY
+③ DECISIONS.md   — permanent architectural decisions
+④ DYNAMIC.md     — operational memory (pre-populated with current state)
+⑤ skills.md      — domain knowledge (pre-populated from interview)
+⑥ LOG_ERRORS.md  — prevention memory (pre-populated with error categories)
 
 → Offer each file for download or direct write to repo root
 → Confirm: "✅ Files generated. [PROJECT_NAME] FIL project is ready."
@@ -228,6 +259,19 @@ Generate in this order:
    → Tag each with [truth:user-confirmed]
 → Fill CODING STANDARDS from FORMATTER · LINTER · TEST_FRAMEWORK · MIN_COVERAGE
 → Fill PERMANENT CONSTRAINTS from CONSTRAINTS[]
+→ Add a mandatory "Security Baseline — Non-negotiable · Proportional by design" section covering:
+   · project risk classification and explicit [N/A — category — reason]
+   · frontend/build/log/prompt content treated as public; no privileged client secrets
+   · server-side authentication and authorization; write methods protected
+   · boundary validation, size limits, output sanitization, traversal and upload safety
+   · least privilege; separate human and CI credentials
+   · internal services/private data stores not publicly bound
+   · minimal ports, TLS and appropriate web security headers
+   · dependency provenance, lockfiles, audits, CI action and SSH host verification
+   · tested build, health check, rollback, backup and restoration test
+   · actionable monitoring, evidence-based verification and residual-risk reporting
+→ Tailor controls from SECURITY_PROFILE · PROTECTED_ASSETS · DEPLOYMENT_MODEL
+→ Never weaken the baseline silently; mark irrelevant categories explicitly
 → Fill FALLBACK TABLE: propose reasonable defaults based on STACK
    → Mark as [truth:estimated] · flag for operator review
 → CHANGELOG: V1.0.0-beta · [DATE] · "Initial generation via FIL Boot"
@@ -236,7 +280,17 @@ Generate in this order:
 **AGENTS.md:**
 ```
 → Use standard AGENTS.md template — do not customize per project
+→ Include SOP-SECURITY with classify → design review → adversarial verification → scans → residual-risk report
+→ Trigger it for endpoints, auth, uploads, data, dependencies, CI/CD, infrastructure and deployment
 → This file is framework infrastructure · not project-specific
+```
+
+**DECISIONS.md:**
+```
+→ Generate the standard ADR registry
+→ Record only project-specific permanent security choices, not the universal baseline
+→ Examples: authentication strategy · deployment boundary · backup target · accepted residual risk
+→ Never duplicate CLAUDE.md Security Baseline
 ```
 
 **DYNAMIC.md:**
@@ -294,11 +348,11 @@ ANNOUNCE:
 
 EXECUTE:
 ① Verify files are in repo root:
-   CLAUDE.md · AGENTS.md · DYNAMIC.md · skills.md · LOG_ERRORS.md
+   CLAUDE.md · AGENTS.md · DECISIONS.md · DYNAMIC.md · skills.md · LOG_ERRORS.md
 
 ② Propose first commit:
    "Proposed commit: 'chore: initialize FIL Coding Agent V1.0.0-beta'
-    Files: CLAUDE.md · AGENTS.md · DYNAMIC.md · skills.md · LOG_ERRORS.md
+    Files: CLAUDE.md · AGENTS.md · DECISIONS.md · DYNAMIC.md · skills.md · LOG_ERRORS.md
 
     Run 'commit' to commit, or copy the files manually."
 
@@ -309,14 +363,14 @@ EXECUTE:
    Commit: chore: initialize FIL Coding Agent V1.0.0-beta
 
    Your next session:
-   → Agent loads CLAUDE.md + LOG_ERRORS.md + DYNAMIC.md at boot
+   → Agent loads CLAUDE.md + DECISIONS.md + LOG_ERRORS.md + DYNAMIC.md at boot
    → No manual setup needed
    → First task: [INITIAL_TODOS[0]]"
 
 ─── ON MANUAL ────────────────────────────────────────────────────
 → "✅ Files generated. Copy them to your repo root.
    Commit when ready with:
-   git add CLAUDE.md AGENTS.md DYNAMIC.md skills.md LOG_ERRORS.md
+   git add CLAUDE.md AGENTS.md DECISIONS.md DYNAMIC.md skills.md LOG_ERRORS.md
    git commit -m 'chore: initialize FIL Coding Agent V1.0.0-beta'"
 ```
 
@@ -384,5 +438,5 @@ EXECUTE:
 
 ---
 
-*FIL Coding Agent Edition — Boot File · V1.0.0-beta*
+*FIL Coding Agent Edition — Boot File · V1.4.0-beta*
 *"One file to initialize. Five files generated."*
