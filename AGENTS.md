@@ -1,5 +1,5 @@
 # [PROJECT_NAME] — Agent Orchestration (AGENTS.md)
-> FIL Coding Agent Edition · V1.3.0-beta
+> FIL Coding Agent Edition · V1.4.0-beta
 > Authority: L2 — Operational procedures. Governs how the agent works each session.
 > Never overrides CLAUDE.md (L1).
 
@@ -678,6 +678,11 @@ ncgl          → List all active NCGL blocks in Hot Zone with status
 ## CHANGELOG
 
 ```
+V1.4.0-beta ([DATE])
+→ SOP-SECURITY upgraded from secret scan to full security-by-design review
+→ Added classify · design · adversarial verification · scan · delivery evidence phases
+→ Controls remain proportional through explicit [N/A — category — reason]
+
 V1.3.0-beta ([DATE])
 → Header version corrected V1.0.0-beta → V1.2.0-beta (all occurrences)
 → SOP-REVIEW_DATE added (ADR review process · renew · supersede · deprecate · defer)
