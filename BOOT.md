@@ -282,6 +282,29 @@ Generate in this order:
 → Use standard AGENTS.md template — do not customize per project
 → Include SOP-SECURITY with classify → design review → adversarial verification → scans → residual-risk report
 → Trigger it for endpoints, auth, uploads, data, dependencies, CI/CD, infrastructure and deployment
+→ Include mandatory incremental work logging. The agent MUST checkpoint its work without waiting for the operator when:
+   · a root cause is identified
+   · an architectural or implementation decision is made
+   · a meaningful implementation step is completed
+   · tests change the plan or reveal reusable information
+   · a blocker is discovered or removed
+   · a commit or PR is created or merged
+   · the task changes direction
+   · before switching to another substantial task
+→ Checkpoints record: what changed · why · verification/evidence · remaining work · commit/PR when available
+→ Do not log every command, file read, trivial intermediate reasoning, or failed exploration with no reusable information
+→ Define a FIL session as one coherent unit of work from start/resume to a stable checkpoint around one substantial objective
+→ A PR merge is a mandatory checkpoint, NOT automatically a new FIL session
+→ Start a new numeric session when a new substantial objective begins after the previous objective reached a stable checkpoint
+→ A resumed continuation of the same objective may use `SESSION N (suite)` and does not count as a new numeric session
+→ Enforce automatic session-memory archiving without waiting for the operator:
+   · DYNAMIC.md keeps exactly the latest 10 numeric sessions at most
+   · when a new numeric session would exceed 10, archive the oldest numeric session(s)
+   · archive under root-level `archives/`, sibling of `docs/`
+   · archive filename MUST be prefixed `YYYYMMDD_`
+   · `SESSION N (suite)` belongs to session N for counting and archiving
+   · archived sessions must not remain duplicated in DYNAMIC.md
+   · preserve chronological order and enough context to reconstruct the work history
 → This file is framework infrastructure · not project-specific
 ```
 
@@ -306,6 +329,8 @@ Generate in this order:
 → Fill TODO from INITIAL_TODOS[]
 → Fill BLOCKERS from INITIAL_BLOCKERS[]
 → Leave Warm Zone and Cold Zone empty (first session)
+→ Reserve Session History for numbered `SESSION N` entries and their optional `SESSION N (suite)` continuations
+→ Keep at most the latest 10 numeric sessions in DYNAMIC.md; archive older sessions automatically under `archives/YYYYMMDD_*.md`
 ```
 
 **skills.md:**
@@ -439,4 +464,4 @@ EXECUTE:
 ---
 
 *FIL Coding Agent Edition — Boot File · V1.4.0-beta*
-*"One file to initialize. Five files generated."*
+*"One file to initialize. Six files generated."*
